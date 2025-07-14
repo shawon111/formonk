@@ -35,11 +35,6 @@ const App = () => (
                   <Dashboard />
                 </ProtectedRoute>
               } />
-              <Route path="/form-builder" element={
-                <ProtectedRoute>
-                  <FormBuilder />
-                </ProtectedRoute>
-              } />
               <Route path="/form-builder/:id" element={
                 <ProtectedRoute>
                   <FormBuilder />

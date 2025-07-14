@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Plus, Edit, Trash2, FileText, BarChart3, Eye, Copy, Crown, Settings, TrendingUp } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useForms } from '@/hooks/useForms';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -16,8 +16,8 @@ import FormAnalytics from '@/components/analytics/FormAnalytics';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
-  const { forms, loading, createForm, deleteForm, updateForm, checkFormLimit } = useForms();
+  const { signOut, loading } = useAuth();
+  const { forms, createForm, deleteForm, updateForm, checkFormLimit } = useForms();
   const { isPro, subscriptionTier, openCustomerPortal, checkSubscription } = useSubscription();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [formLimit, setFormLimit] = useState({ canCreate: true, currentCount: 0, isPro: false });
@@ -92,7 +92,7 @@ const Dashboard = () => {
     if (success) {
       toast({
         title: isPublic ? "Form made private" : "Form made public",
-        description: isPublic 
+        description: isPublic
           ? "The form is no longer accessible to the public."
           : "The form is now accessible via public link.",
       });
@@ -153,7 +153,16 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">Formonk</h1>
+              <Link to='/'>
+                <div className="flex items-center space-x-1">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                    <img src="/formonk-logo.png" alt="formonk logo" />
+                  </div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    Formonk
+                  </h1>
+                </div>
+              </Link>
               {isPro && (
                 <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white">
                   <Crown className="w-3 h-3 mr-1" />
@@ -188,7 +197,7 @@ const Dashboard = () => {
               <p className="text-gray-600">Manage and create beautiful forms</p>
             </div>
             {!isPro && (
-              <Button 
+              <Button
                 onClick={() => setShowUpgradeModal(true)}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
@@ -208,7 +217,7 @@ const Dashboard = () => {
                 </div>
                 <Progress value={(formLimit.currentCount / 3) * 100} className="mb-2" />
                 <p className="text-sm text-gray-600">
-                  {formLimit.currentCount >= 3 
+                  {formLimit.currentCount >= 3
                     ? "You've reached the free plan limit. Upgrade to Pro for unlimited forms!"
                     : `${3 - formLimit.currentCount} forms remaining on free plan.`
                   }
@@ -334,8 +343,8 @@ const Dashboard = () => {
         )}
       </main>
 
-      <ProUpgradeModal 
-        open={showUpgradeModal} 
+      <ProUpgradeModal
+        open={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
       />
     </div>

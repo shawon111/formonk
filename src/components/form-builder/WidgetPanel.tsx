@@ -18,8 +18,8 @@ const WidgetPanel: React.FC = () => {
   return (
     <div className="p-4">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Form Elements</h2>
-        <p className="text-sm text-gray-600">Drag elements to the preview area</p>
+        <h2 className="text-lg font-semibold text-gray-800 mb-2">Form Widgets</h2>
+        <p className="text-sm text-gray-600">Drag widgets to the preview area</p>
       </div>
 
       <Droppable droppableId="widget-panel" isDropDisabled={true}>

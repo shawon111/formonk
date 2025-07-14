@@ -10,7 +10,9 @@ import FormPreview from './FormPreview';
 import FieldSettings from './FieldSettings';
 import FormSettings from './FormSettings';
 import FormExportModal from './FormExportModal';
-import { Settings, Eye, Download, Grid3X3 } from 'lucide-react';
+import { Settings, Eye, Download, Grid3X3, LayoutGrid } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Link } from 'react-router-dom';
 
 interface ElementorFormBuilderProps {
   formFields: FormField[];
@@ -64,10 +66,10 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
         showLabel: true,
         style: {},
         labelStyle: {},
-        ...(widgetType === 'select' || widgetType === 'radio' || widgetType === 'checkbox' 
+        ...(widgetType === 'select' || widgetType === 'radio' || widgetType === 'checkbox'
           ? { options: ['Option 1', 'Option 2'] } : {})
       };
-      
+
       const newFields = [...formFields];
       newFields.splice(result.destination.index, 0, newField);
       onFieldsChange(newFields);
@@ -117,7 +119,7 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
 
   const handleViewForm = () => {
     if (formId) {
-      window.open(`/form/${formId}`, '_blank');
+      window.open(`/f/${formId}`, '_blank');
     }
   };
 
@@ -175,36 +177,48 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
       {/* Top Bar */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-semibold text-gray-800">Form Builder</h1>
+          <div className="flex items-center space-x-4 w-[15%] justify-between">
+            <Link to='/'>
+              <div className="flex items-center space-x-1">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                  <img src="/formonk-logo.png" alt="formonk logo" />
+                </div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Formonk
+                </h1>
+              </div>
+            </Link>
             <div className="flex items-center space-x-2">
-              <Button
-                variant={leftPanelView === 'widgets' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => {
-                  setLeftPanelView('widgets');
-                  setSelectedFieldId(null);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <Grid3X3 className="w-4 h-4" />
-                <span>Widgets</span>
-              </Button>
-              <Button
-                variant={leftPanelView === 'form-settings' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => {
-                  setLeftPanelView('form-settings');
-                  setSelectedFieldId(null);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <Settings className="w-4 h-4" />
-                <span>Form Settings</span>
-              </Button>
+              <Tooltip>
+                <TooltipTrigger>
+                  <LayoutGrid
+                    onClick={() => {
+                      setLeftPanelView('widgets');
+                      setSelectedFieldId(null);
+                    }}
+                    className='cursor-pointer px-1 py-1 rounded border border-gray-300 hover:bg-gray-200 transition'
+                    size={30} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add Widget</p>
+                </TooltipContent>
+              </Tooltip>
+
             </div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-end space-x-3 w-[85%]">
+            <Button
+              variant={leftPanelView === 'form-settings' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => {
+                setLeftPanelView('form-settings');
+                setSelectedFieldId(null);
+              }}
+              className="flex items-center space-x-2"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Form Settings</span>
+            </Button>
             <Button
               variant="outline"
               size="sm"
@@ -224,8 +238,8 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
               <Download className="w-4 h-4" />
               <span>Export Code</span>
             </Button>
-            <Button 
-              onClick={handleSave} 
+            <Button
+              onClick={handleSave}
               disabled={!hasChanges}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >

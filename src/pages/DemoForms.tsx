@@ -16,7 +16,7 @@ const DemoForms = () => {
         .select('*')
         .eq('is_public', true)
         .order('view_count', { ascending: false });
-      
+
       if (error) throw error;
       return data;
     }
@@ -40,9 +40,14 @@ const DemoForms = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Formonk
-              </h1>
+              <div className="flex items-center space-x-1">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                  <img src="/formonk-logo.png" alt="formonk logo" />
+                </div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Formonk
+                </h1>
+              </div>
             </Link>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" asChild>
@@ -70,7 +75,7 @@ const DemoForms = () => {
             </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Explore our collection of beautifully designed forms. See how easy it is to create 
+            Explore our collection of beautifully designed forms. See how easy it is to create
             engaging, responsive forms that convert visitors into valuable data.
           </p>
         </div>
@@ -133,8 +138,8 @@ const DemoForms = () => {
           <p className="text-xl text-blue-100 mb-8">
             Join thousands of creators who use Formonk to build beautiful, converting forms.
           </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6"
             asChild
           >

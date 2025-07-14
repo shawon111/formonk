@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useForms, FormField, FormStyle } from '@/hooks/useForms';
@@ -50,7 +50,7 @@ const FormBuilder = () => {
     if (isEditing && id) {
       loadForm();
     }
-  }, [isEditing, id, user]);
+  }, [isEditing, id]);
 
   const loadForm = async () => {
     if (!id) return;
