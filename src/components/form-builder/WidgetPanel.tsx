@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Type, Mail, Phone, FileText, ChevronDown, Circle, Square } from 'lucide-react';
 
 const widgets = [

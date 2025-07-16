@@ -17,7 +17,7 @@ const PublicFormView = () => {
   const { formId } = useParams<{ formId: string }>();
   const navigate = useNavigate();
   const { getPublicForm, submitForm } = useForms();
-  
+
   const [form, setForm] = useState<Form | null>(null);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
@@ -102,13 +102,13 @@ const PublicFormView = () => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm() || !form) return;
 
     setSubmitting(true);
     try {
       const success = await submitForm(form.id, formData);
-      
+
       if (success) {
         setSubmitted(true);
         toast({
@@ -137,16 +137,16 @@ const PublicFormView = () => {
   const getFieldStyle = (field: FormField) => {
     const style = field.style || {};
     return {
-      backgroundColor: style.backgroundColor || '#ffffff',
+      backgroundColor: style.backgroundColor || 'transparent',
       color: style.textColor || '#000000',
       borderColor: style.borderColor || '#e5e7eb',
       borderWidth: style.borderWidth || '1px',
-      borderRadius: style.borderRadius || '6px',
+      borderRadius: style.borderRadius || '0px',
       fontSize: style.fontSize || '16px',
       fontFamily: style.fontFamily || 'Inter',
       padding: style.padding || '8px 12px',
       margin: style.margin || '0px',
-      boxShadow: style.boxShadow || '0px 1px 3px rgba(0, 0, 0, 0.1)'
+      boxShadow: style.boxShadow || 'none'
     };
   };
 
@@ -188,12 +188,12 @@ const PublicFormView = () => {
       color: buttonStyle.textColor || '#ffffff',
       borderColor: buttonStyle.borderColor || '#3b82f6',
       borderWidth: buttonStyle.borderWidth || '1px',
-      borderRadius: buttonStyle.borderRadius || '6px',
+      borderRadius: buttonStyle.borderRadius || '0px',
       fontSize: buttonStyle.fontSize || '16px',
       fontFamily: buttonStyle.fontFamily || 'Inter',
       padding: buttonStyle.padding || '12px 24px',
       margin: buttonStyle.margin || '0px',
-      boxShadow: buttonStyle.boxShadow || '0px 2px 4px rgba(0, 0, 0, 0.1)'
+      boxShadow: buttonStyle.boxShadow || 'none'
     };
   };
 
@@ -210,14 +210,14 @@ const PublicFormView = () => {
             placeholder={field.placeholder}
             required={field.required}
             style={fieldStyle}
-            className="min-h-[120px] border-2 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
+            className="min-h-[120px] focus:ring-4 focus:ring-blue-100 transition-all duration-200"
           />
         );
 
       case 'select':
         return (
           <Select value={value} onValueChange={(val) => handleInputChange(field.id, val)}>
-            <SelectTrigger 
+            <SelectTrigger
               style={fieldStyle}
               className="h-12 border-2 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
             >
@@ -272,7 +272,7 @@ const PublicFormView = () => {
             placeholder={field.placeholder}
             required={field.required}
             style={fieldStyle}
-            className="h-12 border-2 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
+            className="h-12 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
           />
         );
     }
@@ -298,8 +298,8 @@ const PublicFormView = () => {
               <CheckSquare className="w-20 h-20 text-green-600 mx-auto mb-6" />
               <h2 className="text-3xl font-bold text-gray-900 mb-3">Thank You!</h2>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed">Your form has been submitted successfully.</p>
-              <Button 
-                onClick={() => window.location.reload()} 
+              <Button
+                onClick={() => window.location.reload()}
                 variant="outline"
                 className="h-12 px-8 text-base font-semibold border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
               >
@@ -329,44 +329,66 @@ const PublicFormView = () => {
     color: formStyle.textColor || '#000000',
     borderColor: formStyle.borderColor || '#e5e7eb',
     borderWidth: formStyle.borderWidth || '1px',
-    borderRadius: formStyle.borderRadius || '8px',
+    borderRadius: formStyle.borderRadius || '0px',
     fontSize: formStyle.fontSize || '16px',
     fontFamily: formStyle.fontFamily || 'Inter',
-    padding: formStyle.padding || '32px',
-    boxShadow: formStyle.boxShadow || '0px 4px 6px rgba(0, 0, 0, 0.1)'
+    padding: formStyle.padding || '24px',
+    boxShadow: formStyle.boxShadow || 'none'
   };
-
-  const titleStyle = getTitleStyle();
-  const descriptionStyle = getDescriptionStyle();
-  const buttonStyle = getButtonStyle();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 font-sans">
       <div className="max-w-3xl mx-auto px-6">
         <Card className="shadow-2xl border-0 overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-8 px-8">
-            <CardTitle 
+          {/* <CardHeader className="">
+            <CardTitle
               className="text-3xl font-bold leading-tight"
               style={getTitleStyle()}
             >
               {form.title}
             </CardTitle>
             {form.description && (
-              <p 
+              <p
                 className="text-blue-100 text-lg mt-3 leading-relaxed"
                 style={getDescriptionStyle()}
               >
                 {form.description}
               </p>
             )}
-          </CardHeader>
+          </CardHeader> */}
           <CardContent style={formContainerStyle} className="border-2">
+            {/* {(showFormTitle || showFormDescription) && (
+              <div className="mb-8 text-center">
+                {showFormTitle && (
+                  <h1
+                    className="text-3xl font-bold mb-4"
+                    style={{
+                      color: formStyle.textColor || 'inherit',
+                      fontFamily: formStyle.fontFamily || 'inherit'
+                    }}
+                  >
+                    {formTitle || 'Form Title'}
+                  </h1>
+                )}
+                {showFormDescription && formDescription && (
+                  <p
+                    className="text-lg"
+                    style={{
+                      color: formStyle.textColor || 'inherit',
+                      fontFamily: formStyle.fontFamily || 'inherit'
+                    }}
+                  >
+                    {formDescription}
+                  </p>
+                )}
+              </div>
+            )} */}
             <form onSubmit={handleSubmit} className="space-y-8">
               {form.form_fields.map((field) => (
                 <div key={field.id} className="space-y-3">
                   {field.showLabel !== false && (
-                    <Label 
-                      className="block font-semibold"
+                    <Label
+                      className="block"
                       style={getLabelStyle(field)}
                     >
                       {field.label}
@@ -376,10 +398,10 @@ const PublicFormView = () => {
                   {renderField(field)}
                 </div>
               ))}
-              
+
               <div className="pt-6">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-14 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
                   style={getButtonStyle()}
                   disabled={submitting}

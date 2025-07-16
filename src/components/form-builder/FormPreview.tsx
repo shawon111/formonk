@@ -32,16 +32,18 @@ const FormPreview: React.FC<FormPreviewProps> = ({
     const fieldStyle = {
       backgroundColor: field.style?.backgroundColor || 'transparent',
       color: field.style?.textColor || 'inherit',
-      borderColor: field.style?.borderColor || 'transparent',
-      borderWidth: field.style?.borderWidth || '0px',
+      borderColor: field.style?.borderColor || '#e5e7eb',
+      borderWidth: field.style?.borderWidth || '1px',
       borderRadius: field.style?.borderRadius || '0px',
       fontSize: field.style?.fontSize || 'inherit',
       fontFamily: field.style?.fontFamily || 'inherit',
       padding: field.style?.padding || '8px 12px',
       border: field.style?.borderWidth && field.style?.borderWidth !== '0px' 
         ? `${field.style.borderWidth} solid ${field.style.borderColor || '#e5e7eb'}` 
-        : 'none'
+        : '1px solid #e5e7eb'
     };
+
+    console.log("style for field ", field.label, "is= ", fieldStyle)
 
     switch (field.type) {
       case 'textarea':
@@ -115,7 +117,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
             : 'none'
         }}
       >
-        <div style={{ padding: formStyle.padding || '32px' }}>
+        <div style={{ padding: formStyle.padding || '24px' }}>
           {(showFormTitle || showFormDescription) && (
             <div className="mb-8 text-center">
               {showFormTitle && (

@@ -190,7 +190,7 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
                 <div>
                   <Label>Border Width</Label>
                   <BorderControl
-                    value={fieldStyle.borderWidth || '1px'}
+                    value={fieldStyle.borderWidth || '0px'}
                     onChange={(value) => updateFieldStyle('borderWidth', value)}
                   />
                 </div>

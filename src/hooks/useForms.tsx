@@ -92,6 +92,8 @@ export interface Form {
   user_id: string;
   view_count: number;
   submission_count: number;
+  show_title: boolean;
+  show_description: boolean;
   style?: FormStyle;
 }
 
@@ -137,7 +139,7 @@ export const useForms = () => {
       setLoading(false);
       return;
     }
-    
+
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -146,14 +148,14 @@ export const useForms = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
+
       const transformedForms = (data || []).map(form => ({
         ...form,
         form_fields: Array.isArray(form.form_fields) ? form.form_fields as unknown as FormField[] : [],
         steps: Array.isArray(form.steps) ? form.steps as unknown as FormStep[] : [],
         style: parseFormStyle(form.style)
       })) as Form[];
-      
+
       setForms(transformedForms);
     } catch (error: any) {
       toast({
@@ -212,6 +214,8 @@ export const useForms = () => {
           is_public: false,
           user_id: user.id,
           view_count: 0,
+          show_title: true,
+          show_description: true,
           submission_count: 0
         })
         .select()
@@ -283,7 +287,7 @@ export const useForms = () => {
 
       // Group by date for recent activity
       const activityMap = new Map<string, { views: number; submissions: number }>();
-      
+
       data?.forEach(item => {
         const date = new Date(item.timestamp).toDateString();
         if (!activityMap.has(date)) {
@@ -370,7 +374,7 @@ export const useForms = () => {
         .single();
 
       if (error) throw error;
-      
+
       return {
         ...data,
         form_fields: Array.isArray(data.form_fields) ? data.form_fields as unknown as FormField[] : [],
@@ -397,10 +401,10 @@ export const useForms = () => {
         .single();
 
       if (error) throw error;
-      
+
       // Track the view
       await trackFormView(id);
-      
+
       return {
         ...data,
         form_fields: Array.isArray(data.form_fields) ? data.form_fields as unknown as FormField[] : [],
@@ -445,7 +449,7 @@ export const useForms = () => {
         .order('submitted_at', { ascending: false });
 
       if (error) throw error;
-      
+
       return data || [];
     } catch (error: any) {
       toast({

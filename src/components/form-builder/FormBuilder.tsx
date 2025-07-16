@@ -11,6 +11,8 @@ interface FormData {
   description: string;
   form_fields: FormField[];
   is_public: boolean;
+  show_title: boolean;
+  show_description: boolean
 }
 
 const FormBuilder = () => {
@@ -24,7 +26,9 @@ const FormBuilder = () => {
     title: '',
     description: '',
     form_fields: [],
-    is_public: false
+    is_public: false,
+    show_title: true,
+    show_description: true
   });
 
   const [formStyle, setFormStyle] = useState<FormStyle>({
@@ -32,12 +36,12 @@ const FormBuilder = () => {
     textColor: '#000000',
     borderColor: '#e5e7eb',
     borderWidth: '1px',
-    borderRadius: '8px',
+    borderRadius: '0px',
     fontSize: '16px',
     fontFamily: 'Inter',
-    padding: '32px'
+    padding: '24px'
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -54,18 +58,20 @@ const FormBuilder = () => {
 
   const loadForm = async () => {
     if (!id) return;
-    
+
     setLoading(true);
     const form = await getForm(id);
-    
+
     if (form) {
       setFormData({
         title: form.title,
         description: form.description || '',
         form_fields: form.form_fields || [],
-        is_public: form.is_public || false
+        is_public: form.is_public || false,
+        show_title: form.show_title || true,
+        show_description:form.show_description || true
       });
-      
+
       // Handle the style property safely with fallback
       const defaultStyle = {
         backgroundColor: '#ffffff',
@@ -75,9 +81,9 @@ const FormBuilder = () => {
         borderRadius: '8px',
         fontSize: '16px',
         fontFamily: 'Inter',
-        padding: '32px'
+        padding: '24px'
       };
-      
+
       setFormStyle((form as any).style || defaultStyle);
     } else {
       toast({
@@ -87,29 +93,31 @@ const FormBuilder = () => {
       });
       navigate('/dashboard');
     }
-    
+
     setLoading(false);
   };
 
   const handleSave = async () => {
     if (!id || !user) return;
-    
+
     setSaving(true);
     const success = await updateForm(id, {
       title: formData.title,
       description: formData.description,
       form_fields: formData.form_fields,
       is_public: formData.is_public,
-      style: formStyle
+      style: formStyle,
+      show_title: formData.show_title,
+      show_description: formData.show_description
     });
-    
+
     if (success) {
       toast({
         title: "Form saved",
         description: "Your form has been successfully saved.",
       });
     }
-    
+
     setSaving(false);
   };
 
@@ -133,6 +141,20 @@ const FormBuilder = () => {
       description
     }));
   };
+
+  const handleShowFormTitle = (show: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      show_title: show
+    }))
+  }
+
+  const handleShowFormDescription = (show: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      show_description: show
+    }))
+  }
 
   const handleViewForm = () => {
     if (id) {
@@ -162,6 +184,8 @@ const FormBuilder = () => {
       onFormStyleChange={setFormStyle}
       onFormTitleChange={handleFormTitleChange}
       onFormDescriptionChange={handleFormDescriptionChange}
+      onFormTitleShowChange={handleShowFormTitle}
+      onFormDescriptionShowChange={handleShowFormDescription}
       onSave={handleSave}
       onViewForm={handleViewForm}
     />

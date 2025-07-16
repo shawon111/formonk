@@ -24,6 +24,8 @@ interface ElementorFormBuilderProps {
   onFormStyleChange: (style: FormStyle) => void;
   onFormTitleChange: (title: string) => void;
   onFormDescriptionChange: (description: string) => void;
+  onFormTitleShowChange: (show:boolean)=> void;
+  onFormDescriptionShowChange: (show:boolean)=> void;
   onSave: () => void;
   onViewForm: () => void;
 }
@@ -38,6 +40,8 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
   onFormStyleChange,
   onFormTitleChange,
   onFormDescriptionChange,
+  onFormTitleShowChange,
+  onFormDescriptionShowChange,
   onSave,
   onViewForm
 }) => {
@@ -138,6 +142,22 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
     setHasChanges(true);
   };
 
+  const handleShowFormTitleChange = () => {
+    setShowFormTitle(prev => {
+      onFormTitleShowChange(!prev)
+      setHasChanges(true);
+      return !prev;
+    });
+  }
+
+  const handleShowFormDescriptionChange = () => {
+    setShowFormDescription(prev => {
+      onFormDescriptionShowChange(!prev)
+      setHasChanges(true);
+      return !prev;
+    });
+  }
+
   const renderLeftPanel = () => {
     switch (leftPanelView) {
       case 'form-settings':
@@ -151,8 +171,8 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
             onFormDescriptionChange={handleFormDescriptionChange}
             showFormTitle={showFormTitle}
             showFormDescription={showFormDescription}
-            onShowFormTitleChange={setShowFormTitle}
-            onShowFormDescriptionChange={setShowFormDescription}
+            onShowFormTitleChange={handleShowFormTitleChange}
+            onShowFormDescriptionChange={handleShowFormDescriptionChange}
             hasChanges={hasChanges}
             onSave={handleSave}
           />
