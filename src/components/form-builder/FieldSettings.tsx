@@ -198,7 +198,7 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
                 <div>
                   <Label>Border Radius</Label>
                   <BorderControl
-                    value={fieldStyle.borderRadius || '6px'}
+                    value={fieldStyle.borderRadius || '0px'}
                     onChange={(value) => updateFieldStyle('borderRadius', value)}
                   />
                 </div>
@@ -207,9 +207,9 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
                   <Label htmlFor="field-box-shadow">Box Shadow</Label>
                   <Textarea
                     id="field-box-shadow"
-                    value={fieldStyle.boxShadow || '0px 1px 3px rgba(0, 0, 0, 0.1)'}
+                    value={fieldStyle.boxShadow || '0px 0px 0px rgba(0, 0, 0, 0)'}
                     onChange={(e) => updateFieldStyle('boxShadow', e.target.value)}
-                    placeholder="0px 1px 3px rgba(0, 0, 0, 0.1)"
+                    placeholder="0px 0px 0px rgba(0, 0, 0, 0)"
                     rows={2}
                   />
                 </div>

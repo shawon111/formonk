@@ -78,7 +78,7 @@ const FormBuilder = () => {
         textColor: '#000000',
         borderColor: '#e5e7eb',
         borderWidth: '1px',
-        borderRadius: '8px',
+        borderRadius: '0px',
         fontSize: '16px',
         fontFamily: 'Inter',
         padding: '24px'

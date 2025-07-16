@@ -4,6 +4,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card } from '@/components/ui/card';
 import { FormField, FormStyle } from '@/hooks/useForms';
 import { Trash2 } from 'lucide-react';
+import { Button } from '../ui/button';
 
 interface FormPreviewProps {
   formFields: FormField[];
@@ -38,8 +39,8 @@ const FormPreview: React.FC<FormPreviewProps> = ({
       fontSize: field.style?.fontSize || 'inherit',
       fontFamily: field.style?.fontFamily || 'inherit',
       padding: field.style?.padding || '8px 12px',
-      border: field.style?.borderWidth && field.style?.borderWidth !== '0px' 
-        ? `${field.style.borderWidth} solid ${field.style.borderColor || '#e5e7eb'}` 
+      border: field.style?.borderWidth && field.style?.borderWidth !== '0px'
+        ? `${field.style.borderWidth} solid ${field.style.borderColor || '#e5e7eb'}`
         : '1px solid #e5e7eb'
     };
 
@@ -55,7 +56,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
             disabled
           />
         );
-      
+
       case 'select':
         return (
           <select style={fieldStyle} className="w-full outline-none cursor-pointer" disabled>
@@ -65,7 +66,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
             ))}
           </select>
         );
-      
+
       case 'radio':
         return (
           <div className="space-y-2">
@@ -77,7 +78,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
             ))}
           </div>
         );
-      
+
       case 'checkbox':
         return (
           <div className="space-y-2">
@@ -89,7 +90,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
             ))}
           </div>
         );
-      
+
       default:
         return (
           <input
@@ -105,22 +106,23 @@ const FormPreview: React.FC<FormPreviewProps> = ({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Card 
-        className="overflow-hidden border-0"
+      <Card
+        className="overflow-hidden border-0 shadow-none"
         style={{
           backgroundColor: formStyle.backgroundColor || 'transparent',
           borderColor: formStyle.borderColor || 'transparent',
           borderWidth: formStyle.borderWidth || '0px',
           borderRadius: formStyle.borderRadius || '0px',
+          boxShadow: formStyle.boxShadow || '0px 0px 0px 0px rgba(0,0,0,0)'
         }}
       >
         <div style={{ padding: formStyle.padding || '24px' }}>
           {(showFormTitle || showFormDescription) && (
             <div className="mb-8 text-center">
               {showFormTitle && (
-                <h1 
+                <h1
                   className="text-3xl font-bold mb-4"
-                  style={{ 
+                  style={{
                     color: formStyle.textColor || 'inherit',
                     fontFamily: formStyle.fontFamily || 'inherit'
                   }}
@@ -129,9 +131,9 @@ const FormPreview: React.FC<FormPreviewProps> = ({
                 </h1>
               )}
               {showFormDescription && formDescription && (
-                <p 
+                <p
                   className="text-lg"
-                  style={{ 
+                  style={{
                     color: formStyle.textColor || 'inherit',
                     fontFamily: formStyle.fontFamily || 'inherit'
                   }}
@@ -147,9 +149,8 @@ const FormPreview: React.FC<FormPreviewProps> = ({
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className={`space-y-6 min-h-[400px] transition-all duration-200 ${
-                  snapshot.isDraggingOver ? 'bg-blue-50/50' : ''
-                }`}
+                className={`space-y-6 min-h-[400px] transition-all duration-200 ${snapshot.isDraggingOver ? 'bg-blue-50/50' : ''
+                  }`}
               >
                 {formFields.length === 0 ? (
                   <div className="text-center py-12">
@@ -165,20 +166,19 @@ const FormPreview: React.FC<FormPreviewProps> = ({
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className={`group relative transition-all duration-200 cursor-pointer ${
-                            selectedFieldId === field.id
+                          className={`group relative transition-all duration-200 cursor-pointer ${selectedFieldId === field.id
                               ? 'ring-2 ring-blue-500 ring-offset-2'
                               : snapshot.isDragging
                                 ? 'shadow-lg'
                                 : 'hover:ring-1 hover:ring-gray-300'
-                          }`}
+                            }`}
                           onClick={() => onFieldClick(field.id)}
                         >
                           <div className="mb-2">
                             {field.showLabel !== false && (
-                              <label 
+                              <label
                                 className="block text-sm font-medium mb-1"
-                                style={{ 
+                                style={{
                                   color: field.labelStyle?.textColor || 'inherit',
                                   fontFamily: field.labelStyle?.fontFamily || 'inherit',
                                   fontSize: field.labelStyle?.fontSize || 'inherit'
@@ -190,7 +190,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
                             )}
                             {renderField(field)}
                           </div>
-                          
+
                           {/* Delete button */}
                           <button
                             onClick={(e) => {
@@ -210,6 +210,15 @@ const FormPreview: React.FC<FormPreviewProps> = ({
               </div>
             )}
           </Droppable>
+          <div className="pt-6">
+            <Button
+              type="submit"
+              className="w-full h-14 font-semibold rounded-none"
+              style={formStyle.buttonStyle}
+            >
+              Submit Form
+            </Button>
+          </div>
         </div>
       </Card>
     </div>

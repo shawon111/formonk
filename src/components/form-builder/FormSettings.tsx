@@ -223,7 +223,7 @@ const FormSettings: React.FC<FormSettingsProps> = ({
                 <div>
                   <Label>Form Padding</Label>
                   <SpacingControl
-                    value={formStyle.padding || '32px'}
+                    value={formStyle.padding || '24px'}
                     onChange={(value) => updateFormStyle('padding', value)}
                   />
                 </div>
@@ -239,7 +239,7 @@ const FormSettings: React.FC<FormSettingsProps> = ({
                 <div>
                   <Label>Border Radius</Label>
                   <BorderControl
-                    value={formStyle.borderRadius || '8px'}
+                    value={formStyle.borderRadius || '0px'}
                     onChange={(value) => updateFormStyle('borderRadius', value)}
                   />
                 </div>
@@ -248,9 +248,9 @@ const FormSettings: React.FC<FormSettingsProps> = ({
                   <Label htmlFor="form-box-shadow">Box Shadow</Label>
                   <Textarea
                     id="form-box-shadow"
-                    value={formStyle.boxShadow || '0px 4px 6px rgba(0, 0, 0, 0.1)'}
+                    value={formStyle.boxShadow || '0px 0px 0px rgba(0, 0, 0, 0.1)'}
                     onChange={(e) => updateFormStyle('boxShadow', e.target.value)}
-                    placeholder="0px 4px 6px rgba(0, 0, 0, 0.1)"
+                    placeholder="0px 0px 0px rgba(0, 0, 0, 0.1)"
                     rows={2}
                   />
                 </div>
@@ -457,7 +457,7 @@ const FormSettings: React.FC<FormSettingsProps> = ({
                 <div>
                   <Label>Button Border Radius</Label>
                   <BorderControl
-                    value={formStyle.buttonStyle?.borderRadius || '6px'}
+                    value={formStyle.buttonStyle?.borderRadius || '0px'}
                     onChange={(value) => updateButtonStyle('borderRadius', value)}
                   />
                 </div>
@@ -466,9 +466,9 @@ const FormSettings: React.FC<FormSettingsProps> = ({
                   <Label htmlFor="button-box-shadow">Button Box Shadow</Label>
                   <Textarea
                     id="button-box-shadow"
-                    value={formStyle.buttonStyle?.boxShadow || '0px 2px 4px rgba(0, 0, 0, 0.1)'}
+                    value={formStyle.buttonStyle?.boxShadow || '0px 0px 0px rgba(0, 0, 0, 0)'}
                     onChange={(e) => updateButtonStyle('boxShadow', e.target.value)}
-                    placeholder="0px 2px 4px rgba(0, 0, 0, 0.1)"
+                    placeholder="0px 0px 0px rgba(0, 0, 0, 0)"
                     rows={2}
                   />
                 </div>

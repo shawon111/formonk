@@ -189,7 +189,6 @@ const PublicFormView = () => {
       borderColor: buttonStyle.borderColor || '#3b82f6',
       borderWidth: buttonStyle.borderWidth || '1px',
       borderRadius: buttonStyle.borderRadius || '0px',
-      fontSize: buttonStyle.fontSize || '16px',
       fontFamily: buttonStyle.fontFamily || 'Inter',
       padding: buttonStyle.padding || '12px 24px',
       margin: buttonStyle.margin || '0px',
@@ -339,8 +338,10 @@ const PublicFormView = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 font-sans">
       <div className="max-w-3xl mx-auto px-6">
-        <Card className="border-0 overflow-hidden rounded-none">
-          <CardContent style={formContainerStyle}>
+        <Card className="border-0 overflow-hidden rounded-none shadow-none px-[0] py-[0]"
+          style={formContainerStyle}
+        >
+          <CardContent className='p-0'>
             <form onSubmit={handleSubmit} className="space-y-8">
               {(form.show_title || form.show_description) && (
                 <div className="mb-8 text-center">
@@ -369,10 +370,10 @@ const PublicFormView = () => {
                 </div>
               )}
               {form.form_fields.map((field) => (
-                <div key={field.id} className="space-y-3">
+                <div key={field.id} className="space-y-2">
                   {field.showLabel !== false && (
                     <Label
-                      className="block"
+                      className="block mb-1"
                       style={getLabelStyle(field)}
                     >
                       {field.label}
@@ -386,7 +387,7 @@ const PublicFormView = () => {
               <div className="pt-6">
                 <Button
                   type="submit"
-                  className="w-full h-14 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+                  className="w-full h-14 font-semibold rounded-none"
                   style={getButtonStyle()}
                   disabled={submitting}
                 >
