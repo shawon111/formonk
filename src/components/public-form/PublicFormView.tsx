@@ -339,51 +339,35 @@ const PublicFormView = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 font-sans">
       <div className="max-w-3xl mx-auto px-6">
-        <Card className="shadow-2xl border-0 overflow-hidden">
-          {/* <CardHeader className="">
-            <CardTitle
-              className="text-3xl font-bold leading-tight"
-              style={getTitleStyle()}
-            >
-              {form.title}
-            </CardTitle>
-            {form.description && (
-              <p
-                className="text-blue-100 text-lg mt-3 leading-relaxed"
-                style={getDescriptionStyle()}
-              >
-                {form.description}
-              </p>
-            )}
-          </CardHeader> */}
-          <CardContent style={formContainerStyle} className="border-2">
-            {/* {(showFormTitle || showFormDescription) && (
-              <div className="mb-8 text-center">
-                {showFormTitle && (
-                  <h1
-                    className="text-3xl font-bold mb-4"
-                    style={{
-                      color: formStyle.textColor || 'inherit',
-                      fontFamily: formStyle.fontFamily || 'inherit'
-                    }}
-                  >
-                    {formTitle || 'Form Title'}
-                  </h1>
-                )}
-                {showFormDescription && formDescription && (
-                  <p
-                    className="text-lg"
-                    style={{
-                      color: formStyle.textColor || 'inherit',
-                      fontFamily: formStyle.fontFamily || 'inherit'
-                    }}
-                  >
-                    {formDescription}
-                  </p>
-                )}
-              </div>
-            )} */}
+        <Card className="border-0 overflow-hidden rounded-none">
+          <CardContent style={formContainerStyle}>
             <form onSubmit={handleSubmit} className="space-y-8">
+              {(form.show_title || form.show_description) && (
+                <div className="mb-8 text-center">
+                  {form.show_title && (
+                    <h1
+                      className="text-3xl font-bold mb-4"
+                      style={{
+                        color: form.style.textColor || 'inherit',
+                        fontFamily: form.style.fontFamily || 'inherit'
+                      }}
+                    >
+                      {form.title || 'Form Title'}
+                    </h1>
+                  )}
+                  {form.show_description && form.description && (
+                    <p
+                      className="text-lg"
+                      style={{
+                        color: form.style.textColor || 'inherit',
+                        fontFamily: form.style.fontFamily || 'inherit'
+                      }}
+                    >
+                      {form.description}
+                    </p>
+                  )}
+                </div>
+              )}
               {form.form_fields.map((field) => (
                 <div key={field.id} className="space-y-3">
                   {field.showLabel !== false && (

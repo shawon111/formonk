@@ -106,15 +106,12 @@ const FormPreview: React.FC<FormPreviewProps> = ({
   return (
     <div className="max-w-2xl mx-auto">
       <Card 
-        className="shadow-lg overflow-hidden border-0"
+        className="overflow-hidden border-0"
         style={{
           backgroundColor: formStyle.backgroundColor || 'transparent',
           borderColor: formStyle.borderColor || 'transparent',
           borderWidth: formStyle.borderWidth || '0px',
           borderRadius: formStyle.borderRadius || '0px',
-          border: formStyle.borderWidth && formStyle.borderWidth !== '0px' 
-            ? `${formStyle.borderWidth} solid ${formStyle.borderColor || '#e5e7eb'}` 
-            : 'none'
         }}
       >
         <div style={{ padding: formStyle.padding || '24px' }}>
