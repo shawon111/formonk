@@ -78,24 +78,26 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="fieldRequired">Required</Label>
+                <div className='flex items-center'>
                   <Input
                     type="checkbox"
                     id="fieldRequired"
                     checked={field.required}
+                    className='w-4 h-4 mr-2'
                     onChange={(e) => updateField({ required: e.target.checked })}
                   />
+                  <Label htmlFor="fieldRequired">Required</Label>
                 </div>
 
-                <div>
-                  <Label htmlFor="fieldShowLabel">Show Label</Label>
+                <div className='flex items-center'>
                   <Input
                     type="checkbox"
                     id="fieldShowLabel"
                     checked={field.showLabel !== false}
+                    className='w-4 h-4 mr-2'
                     onChange={(e) => updateField({ showLabel: e.target.checked })}
                   />
+                  <Label htmlFor="fieldShowLabel">Show Label</Label>
                 </div>
               </CardContent>
             </Card>

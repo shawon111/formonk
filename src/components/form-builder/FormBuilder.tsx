@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useForms, FormField, FormStyle } from '@/hooks/useForms';
 import { toast } from '@/hooks/use-toast';
-import ElementorFormBuilder from './ElementorFormBuilder';
+import MainFormBuilder from './MainFormBuilder';
 
 interface FormData {
   title: string;
@@ -174,7 +174,7 @@ const FormBuilder = () => {
   }
 
   return (
-    <ElementorFormBuilder
+    <MainFormBuilder
       formFields={formData.form_fields}
       onFieldsChange={handleFieldsChange}
       formId={id}

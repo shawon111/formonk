@@ -14,7 +14,7 @@ import { Settings, Eye, Download, Grid3X3, LayoutGrid } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Link } from 'react-router-dom';
 
-interface ElementorFormBuilderProps {
+interface MainFormBuilderProps {
   formFields: FormField[];
   onFieldsChange: (fields: FormField[]) => void;
   formId?: string;
@@ -30,7 +30,7 @@ interface ElementorFormBuilderProps {
   onViewForm: () => void;
 }
 
-const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
+const MainFormBuilder: React.FC<MainFormBuilderProps> = ({
   formFields,
   onFieldsChange,
   formId,
@@ -309,4 +309,4 @@ const ElementorFormBuilder: React.FC<ElementorFormBuilderProps> = ({
   );
 };
 
-export default ElementorFormBuilder;
+export default MainFormBuilder;
