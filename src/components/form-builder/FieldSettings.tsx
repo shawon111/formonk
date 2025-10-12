@@ -37,6 +37,8 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
     updateField({ labelStyle: newLabelStyle });
   };
 
+  console.log('Rendering FieldSettings for field:', field);
+
   return (
     <div className="p-4 flex flex-col h-full">
       <div className="mb-4">
@@ -99,6 +101,48 @@ const FieldSettings: React.FC<FieldSettingsProps> = ({ field, onFieldUpdate, onF
                   />
                   <Label htmlFor="fieldShowLabel">Show Label</Label>
                 </div>
+                {(field.type === 'select' || field.type === 'radio' || field.type === 'checkbox') && (
+                  <div>
+                    <Label>Options</Label>
+                    <div className="space-y-2 mt-2">
+                      {(field.options || []).map((option, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <Input
+                            value={option.label || ''}
+                            onChange={(e) => {
+                              const newOptions = [...(field.options || [])];
+                              newOptions[index] = { ...newOptions[index], label: e.target.value, value: e.target.value.toLowerCase().replace(/\s+/g, '-') };
+                              updateField({ options: newOptions });
+                            }}
+                            placeholder={`Option ${index + 1}`}
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => {
+                              const newOptions = (field.options || []).filter((_, i) => i !== index);
+                              updateField({ options: newOptions });
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          const newOptions = [...(field.options || []), { label: `Option ${field.options?.length + 1 || 1}`, value: `option-${field.options?.length + 1 || 1}` }];
+                          updateField({ options: newOptions });
+                        }}
+                      >
+                        + Add Option
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

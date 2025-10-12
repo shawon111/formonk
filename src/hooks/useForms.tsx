@@ -66,7 +66,7 @@ export interface FormField {
   type: string;
   required: boolean;
   placeholder?: string;
-  options?: string[];
+  options?: { label: string; value: string }[];
   step: number;
   style?: FormFieldStyle;
   labelStyle?: FormFieldStyle;

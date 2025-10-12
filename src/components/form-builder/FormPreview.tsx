@@ -5,6 +5,10 @@ import { Card } from '@/components/ui/card';
 import { FormField, FormStyle } from '@/hooks/useForms';
 import { Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
+import { Checkbox } from '../ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 interface FormPreviewProps {
   formFields: FormField[];
@@ -59,23 +63,31 @@ const FormPreview: React.FC<FormPreviewProps> = ({
 
       case 'select':
         return (
-          <select style={fieldStyle} className="w-full outline-none cursor-pointer" disabled>
-            <option>{field.placeholder || 'Select an option'}</option>
-            {field.options?.map((option, idx) => (
-              <option key={idx} value={option}>{option}</option>
-            ))}
-          </select>
+          <Select disabled>
+            <SelectTrigger className="w-full outline-none cursor-pointer" style={fieldStyle}>
+              <SelectValue placeholder={field.placeholder || "Select an option"} />
+            </SelectTrigger>
+            <SelectContent>
+              {field.options?.map((option, idx) => (
+                <SelectItem key={idx} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         );
 
       case 'radio':
         return (
-          <div className="space-y-2">
-            {field.options?.map((option, idx) => (
-              <label key={idx} className="flex items-center space-x-2 cursor-pointer">
-                <input type="radio" name={field.id} disabled />
-                <span style={{ color: field.style?.textColor || 'inherit' }}>{option}</span>
-              </label>
-            ))}
+          <div>
+            <RadioGroup defaultValue="option-one">
+              {field.options?.map((option, idx) => (
+                <div key={idx} className="flex items-center space-x-2 cursor-pointer">
+                  <RadioGroupItem disabled value={option.label} id={option.value} />
+                  <Label style={{ color: field.style?.textColor || 'inherit', fontSize: field.style?.fontSize }} htmlFor={option.value}>{option.label}</Label>
+                </div>
+              ))}
+            </RadioGroup>
           </div>
         );
 
@@ -84,8 +96,8 @@ const FormPreview: React.FC<FormPreviewProps> = ({
           <div className="space-y-2">
             {field.options?.map((option, idx) => (
               <label key={idx} className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" disabled />
-                <span style={{ color: field.style?.textColor || 'inherit' }}>{option}</span>
+                <Checkbox disabled />
+                <Label style={{ color: field.style?.textColor || 'inherit', fontSize: field.style?.fontSize }}>{option.label}</Label>
               </label>
             ))}
           </div>
@@ -167,10 +179,10 @@ const FormPreview: React.FC<FormPreviewProps> = ({
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className={`group relative transition-all duration-200 cursor-pointer ${selectedFieldId === field.id
-                              ? 'ring-2 ring-blue-500 ring-offset-2'
-                              : snapshot.isDragging
-                                ? 'shadow-lg'
-                                : 'hover:ring-1 hover:ring-gray-300'
+                            ? 'ring-2 ring-blue-500 ring-offset-2'
+                            : snapshot.isDragging
+                              ? 'shadow-lg'
+                              : 'hover:ring-1 hover:ring-gray-300'
                             }`}
                           onClick={() => onFieldClick(field.id)}
                         >

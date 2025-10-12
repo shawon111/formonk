@@ -48,7 +48,14 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
       required: false,
       placeholder: '',
       step: 1,
-      ...(type === 'select' || type === 'radio' || type === 'checkbox' ? { options: ['Option 1', 'Option 2'] } : {})
+      ...(type === 'select' || type === 'radio' || type === 'checkbox'
+        ? {
+          options: [
+            { label: 'Option 1', value: 'option-1' },
+            { label: 'Option 2', value: 'option-2' }
+          ]
+        }
+        : {})
     };
     onFieldsChange([...formFields, newField]);
   };
@@ -80,7 +87,9 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
     if (field?.options) {
       updateField(fieldId, {
         options: field.options.map((opt, idx) =>
-          idx === optionIndex ? value : opt
+          idx === optionIndex
+            ? { ...opt, label: value, value: value.toLowerCase().replace(/\s+/g, '-') }
+            : opt
         )
       });
     }
@@ -90,7 +99,10 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
     const field = formFields.find(f => f.id === fieldId);
     if (field?.options) {
       updateField(fieldId, {
-        options: [...field.options, `Option ${field.options.length + 1}`]
+        options: [
+          ...field.options,
+          { label: `Option ${field.options.length + 1}`, value: `option-${field.options.length + 1}` }
+        ]
       });
     }
   };
@@ -110,9 +122,8 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className={`border-2 rounded-xl p-6 bg-white mb-6 transition-all duration-200 ${
-            snapshot.isDragging ? 'shadow-2xl border-blue-300 rotate-1' : 'shadow-md border-gray-200 hover:shadow-lg hover:border-gray-300'
-          }`}
+          className={`border-2 rounded-xl p-6 bg-white mb-6 transition-all duration-200 ${snapshot.isDragging ? 'shadow-2xl border-blue-300 rotate-1' : 'shadow-md border-gray-200 hover:shadow-lg hover:border-gray-300'
+            }`}
         >
           <div className="flex items-center justify-between mb-4">
             <div {...provided.dragHandleProps} className="cursor-grab hover:cursor-grabbing p-2 rounded-lg hover:bg-gray-100 transition-colors">
@@ -184,7 +195,7 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
                   {field.options?.map((option, optionIndex) => (
                     <div key={optionIndex} className="flex space-x-3">
                       <Input
-                        value={option}
+                        value={option.label}
                         onChange={(e) => updateOption(field.id, optionIndex, e.target.value)}
                         placeholder={`Option ${optionIndex + 1}`}
                         className="flex-1 border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg h-11"
@@ -277,11 +288,10 @@ const DragDropFormBuilder: React.FC<DragDropFormBuilderProps> = ({
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className={`min-h-[300px] p-6 rounded-xl border-2 border-dashed transition-all duration-200 ${
-                snapshot.isDraggingOver
-                  ? 'border-blue-400 bg-blue-50'
-                  : 'border-gray-300 bg-gray-50'
-              }`}
+              className={`min-h-[300px] p-6 rounded-xl border-2 border-dashed transition-all duration-200 ${snapshot.isDraggingOver
+                ? 'border-blue-400 bg-blue-50'
+                : 'border-gray-300 bg-gray-50'
+                }`}
             >
               {formFields.length === 0 ? (
                 <div className="text-center py-12">
