@@ -223,9 +223,9 @@ const PublicFormView = () => {
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent className="bg-white border-2 border-gray-200 rounded-lg shadow-lg">
-              {field.options?.map((option) => (
-                <SelectItem key={option} value={option} className="py-3 px-4 hover:bg-blue-50">
-                  {option}
+              {field.options?.map((option, index) => (
+                <SelectItem key={index} value={option.value} className="py-3 px-4 hover:bg-blue-50">
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -235,10 +235,10 @@ const PublicFormView = () => {
       case 'radio':
         return (
           <RadioGroup value={value} onValueChange={(val) => handleInputChange(field.id, val)} className="space-y-3">
-            {field.options?.map((option) => (
-              <div key={option} className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                <RadioGroupItem value={option} id={`${field.id}-${option}`} className="w-5 h-5 border-2 border-gray-300" />
-                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option}</Label>
+            {field.options?.map((option, index) => (
+              <div key={index} className="flex items-center space-x-3 p-3">
+                <RadioGroupItem value={option.value} id={`${field.id}-${option}`} className="w-5 h-5 border-2 border-gray-300" />
+                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option.label}</Label>
               </div>
             ))}
           </RadioGroup>
@@ -248,15 +248,15 @@ const PublicFormView = () => {
         const selectedValues = formData[field.id] || [];
         return (
           <div className="space-y-3">
-            {field.options?.map((option) => (
-              <div key={option} className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+            {field.options?.map((option, index) => (
+              <div key={index} className="flex items-center space-x-3 p-3">
                 <Checkbox
                   id={`${field.id}-${option}`}
                   checked={selectedValues.includes(option)}
-                  onCheckedChange={(checked) => handleCheckboxChange(field.id, option, !!checked)}
+                  onCheckedChange={(checked) => handleCheckboxChange(field.id, option.value, !!checked)}
                   className="w-5 h-5 border-2 border-gray-300"
                 />
-                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option}</Label>
+                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option.value}</Label>
               </div>
             ))}
           </div>
