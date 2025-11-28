@@ -72,8 +72,7 @@ const FormBuilder = () => {
         show_description:form.show_description || true
       });
 
-      // Handle the style property safely with fallback
-      const defaultStyle = {
+      const defaultStyle: FormStyle = {
         backgroundColor: '#ffffff',
         textColor: '#000000',
         borderColor: '#e5e7eb',
@@ -84,7 +83,11 @@ const FormBuilder = () => {
         padding: '24px'
       };
 
-      setFormStyle((form as any).style || defaultStyle);
+      const loadedStyle = form.style || {};
+      setFormStyle({
+        ...defaultStyle,
+        ...loadedStyle
+      });
     } else {
       toast({
         title: "Error",

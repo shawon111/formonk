@@ -140,7 +140,7 @@ const PublicFormView = () => {
       backgroundColor: style.backgroundColor || 'transparent',
       color: style.textColor || '#000000',
       borderColor: style.borderColor || '#e5e7eb',
-      borderWidth: style.borderWidth || '1px',
+      borderWidth: style.borderWidth || '0px',
       borderRadius: style.borderRadius || '0px',
       fontSize: style.fontSize || '16px',
       fontFamily: style.fontFamily || 'Inter',
@@ -187,7 +187,7 @@ const PublicFormView = () => {
       backgroundColor: buttonStyle.backgroundColor || '#3b82f6',
       color: buttonStyle.textColor || '#ffffff',
       borderColor: buttonStyle.borderColor || '#3b82f6',
-      borderWidth: buttonStyle.borderWidth || '1px',
+      borderWidth: buttonStyle.borderWidth || '0px',
       borderRadius: buttonStyle.borderRadius || '0px',
       fontFamily: buttonStyle.fontFamily || 'Inter',
       padding: buttonStyle.padding || '12px 24px',
@@ -199,6 +199,7 @@ const PublicFormView = () => {
   const renderField = useCallback((field: FormField) => {
     const value = formData[field.id] || '';
     const fieldStyle = getFieldStyle(field);
+    console.log('Rendering field:', field);
 
     switch (field.type) {
       case 'textarea':
@@ -209,7 +210,6 @@ const PublicFormView = () => {
             placeholder={field.placeholder}
             required={field.required}
             style={fieldStyle}
-            className="min-h-[120px] focus:ring-4 focus:ring-blue-100 transition-all duration-200"
           />
         );
 
@@ -218,13 +218,12 @@ const PublicFormView = () => {
           <Select value={value} onValueChange={(val) => handleInputChange(field.id, val)}>
             <SelectTrigger
               style={fieldStyle}
-              className="h-12 border-2 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
             >
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
-            <SelectContent className="bg-white border-2 border-gray-200 rounded-lg shadow-lg">
+            <SelectContent>
               {field.options?.map((option, index) => (
-                <SelectItem key={index} value={option.value} className="py-3 px-4 hover:bg-blue-50">
+                <SelectItem key={index} value={option.value}>
                   {option.label}
                 </SelectItem>
               ))}
@@ -234,33 +233,33 @@ const PublicFormView = () => {
 
       case 'radio':
         return (
-          <RadioGroup value={value} onValueChange={(val) => handleInputChange(field.id, val)} className="space-y-3">
+          <RadioGroup value={value} onValueChange={(val) => handleInputChange(field.id, val)} >
             {field.options?.map((option, index) => (
-              <div key={index} className="flex items-center space-x-3 p-3">
-                <RadioGroupItem value={option.value} id={`${field.id}-${option}`} className="w-5 h-5 border-2 border-gray-300" />
-                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option.label}</Label>
+              <div key={index} className="flex items-center gap-2">
+                <RadioGroupItem value={option.value} id={`${field.id}-${option}`} />
+                <Label htmlFor={`${field.id}-${option}`} style={fieldStyle} className="cursor-pointer">{option.label}</Label>
               </div>
             ))}
           </RadioGroup>
         );
 
-      case 'checkbox':
+      case 'checkbox': {
         const selectedValues = formData[field.id] || [];
         return (
           <div className="space-y-3">
             {field.options?.map((option, index) => (
-              <div key={index} className="flex items-center space-x-3 p-3">
+              <div key={index} className="flex items-center gap-2">
                 <Checkbox
-                  id={`${field.id}-${option}`}
-                  checked={selectedValues.includes(option)}
+                  id={`${field.id}-${option.value}`}
+                  checked={selectedValues.includes(option.value)}
                   onCheckedChange={(checked) => handleCheckboxChange(field.id, option.value, !!checked)}
-                  className="w-5 h-5 border-2 border-gray-300"
                 />
-                <Label htmlFor={`${field.id}-${option}`} className="cursor-pointer flex-1">{option.value}</Label>
+                <Label htmlFor={`${field.id}-${option.value}`} style={fieldStyle} className="cursor-pointer">{option.label}</Label>
               </div>
             ))}
           </div>
         );
+      }
 
       default:
         return (
@@ -271,7 +270,6 @@ const PublicFormView = () => {
             placeholder={field.placeholder}
             required={field.required}
             style={fieldStyle}
-            className="h-12 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
           />
         );
     }
@@ -342,15 +340,13 @@ const PublicFormView = () => {
           style={formContainerStyle}
         >
           <CardContent className='p-0'>
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit}>
               {(form.show_title || form.show_description) && (
                 <div className="mb-8 text-center">
                   {form.show_title && (
                     <h1
-                      className="text-3xl font-bold mb-4"
                       style={{
-                        color: form.style.textColor || 'inherit',
-                        fontFamily: form.style.fontFamily || 'inherit'
+                        ...getTitleStyle()
                       }}
                     >
                       {form.title || 'Form Title'}
@@ -360,8 +356,7 @@ const PublicFormView = () => {
                     <p
                       className="text-lg"
                       style={{
-                        color: form.style.textColor || 'inherit',
-                        fontFamily: form.style.fontFamily || 'inherit'
+                        ...getDescriptionStyle()
                       }}
                     >
                       {form.description}
@@ -370,10 +365,9 @@ const PublicFormView = () => {
                 </div>
               )}
               {form.form_fields.map((field) => (
-                <div key={field.id} className="space-y-2">
+                <div key={field.id}>
                   {field.showLabel !== false && (
                     <Label
-                      className="block mb-1"
                       style={getLabelStyle(field)}
                     >
                       {field.label}
@@ -387,7 +381,6 @@ const PublicFormView = () => {
               <div className="pt-6">
                 <Button
                   type="submit"
-                  className="w-full h-14 font-semibold rounded-none"
                   style={getButtonStyle()}
                   disabled={submitting}
                 >

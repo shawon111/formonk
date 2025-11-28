@@ -315,7 +315,16 @@ export const useForms = () => {
     try {
       const dbUpdates: any = { ...updates };
       if (updates.form_fields) {
-        dbUpdates.form_fields = updates.form_fields;
+        // Ensure placeholder is explicitly included in the serialized data
+        // This prevents placeholder from being lost during JSON serialization to JSONB
+        dbUpdates.form_fields = updates.form_fields.map(field => {
+          // Create a new field object with all properties explicitly included
+          // This ensures placeholder (even if empty string) is preserved in JSON
+          return {
+            ...field,
+            placeholder: field.placeholder ?? ''
+          };
+        });
       }
       if (updates.steps) {
         dbUpdates.steps = updates.steps;

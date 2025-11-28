@@ -33,30 +33,67 @@ const FormPreview: React.FC<FormPreviewProps> = ({
   showFormTitle,
   showFormDescription
 }) => {
+  const getTitleStyle = () => {
+    const titleStyle = formStyle?.titleStyle || {};
+    return {
+      color: titleStyle.textColor || '#ffffff',
+      fontSize: titleStyle.fontSize || '24px',
+      fontFamily: titleStyle.fontFamily || 'Inter',
+      margin: titleStyle.margin || '0px',
+      padding: titleStyle.padding || '0px'
+    };
+  };
+
+  const getDescriptionStyle = () => {
+    const descriptionStyle = formStyle?.descriptionStyle || {};
+    return {
+      color: descriptionStyle.textColor || '#e3f2fd',
+      fontSize: descriptionStyle.fontSize || '16px',
+      fontFamily: descriptionStyle.fontFamily || 'Inter',
+      margin: descriptionStyle.margin || '0px',
+      padding: descriptionStyle.padding || '0px'
+    };
+  };
+
+
   const renderField = (field: FormField) => {
     const fieldStyle = {
       backgroundColor: field.style?.backgroundColor || 'transparent',
       color: field.style?.textColor || 'inherit',
       borderColor: field.style?.borderColor || '#e5e7eb',
-      borderWidth: field.style?.borderWidth || '1px',
+      borderWidth: field.style?.borderWidth || '0px',
       borderRadius: field.style?.borderRadius || '0px',
       fontSize: field.style?.fontSize || 'inherit',
       fontFamily: field.style?.fontFamily || 'inherit',
-      padding: field.style?.padding || '8px 12px',
+      padding: field.style?.padding || '0px 0px',
       border: field.style?.borderWidth && field.style?.borderWidth !== '0px'
         ? `${field.style.borderWidth} solid ${field.style.borderColor || '#e5e7eb'}`
-        : '1px solid #e5e7eb'
+        : '0px solid #e5e7eb'
     };
 
-    console.log("style for field ", field.label, "is= ", fieldStyle)
+    const getFieldStyle = (field: FormField) => {
+      const style = field.style || {};
+      return {
+        backgroundColor: style.backgroundColor || 'transparent',
+        color: style.textColor || '#000000',
+        borderColor: style.borderColor || '#e5e7eb',
+        borderWidth: style.borderWidth || '0px',
+        borderRadius: style.borderRadius || '0px',
+        fontSize: style.fontSize || '16px',
+        fontFamily: style.fontFamily || 'Inter',
+        padding: style.padding || '8px 12px',
+        margin: style.margin || '0px',
+        boxShadow: style.boxShadow || 'none'
+      };
+    };
 
     switch (field.type) {
       case 'textarea':
         return (
           <textarea
-            style={fieldStyle}
+            style={getFieldStyle(field)}
             placeholder={field.placeholder || field.label}
-            className="w-full min-h-[80px] resize-none outline-none"
+            className='w-full'
             disabled
           />
         );
@@ -64,7 +101,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
       case 'select':
         return (
           <Select disabled>
-            <SelectTrigger className="w-full outline-none cursor-pointer" style={fieldStyle}>
+            <SelectTrigger style={getFieldStyle(field)}>
               <SelectValue placeholder={field.placeholder || "Select an option"} />
             </SelectTrigger>
             <SelectContent>
@@ -82,9 +119,9 @@ const FormPreview: React.FC<FormPreviewProps> = ({
           <div>
             <RadioGroup defaultValue="option-one">
               {field.options?.map((option, idx) => (
-                <div key={idx} className="flex items-center space-x-2 cursor-pointer">
+                <div key={idx} className="flex items-center gap-2">
                   <RadioGroupItem disabled value={option.label} id={option.value} />
-                  <Label style={{ color: field.style?.textColor || 'inherit', fontSize: field.style?.fontSize }} htmlFor={option.value}>{option.label}</Label>
+                  <Label style={getFieldStyle(field)} htmlFor={option.value}>{option.label}</Label>
                 </div>
               ))}
             </RadioGroup>
@@ -93,11 +130,11 @@ const FormPreview: React.FC<FormPreviewProps> = ({
 
       case 'checkbox':
         return (
-          <div className="space-y-2">
+          <div className='space-y-2'>
             {field.options?.map((option, idx) => (
-              <label key={idx} className="flex items-center space-x-2 cursor-pointer">
+              <label key={idx} className="flex items-center gap-2">
                 <Checkbox disabled />
-                <Label style={{ color: field.style?.textColor || 'inherit', fontSize: field.style?.fontSize }}>{option.label}</Label>
+                <Label style={getFieldStyle(field)}>{option.label}</Label>
               </label>
             ))}
           </div>
@@ -107,7 +144,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
         return (
           <input
             type={field.type}
-            style={fieldStyle}
+            style={getFieldStyle(field)}
             placeholder={field.placeholder || field.label}
             className="w-full outline-none"
             disabled
@@ -130,25 +167,17 @@ const FormPreview: React.FC<FormPreviewProps> = ({
       >
         <div style={{ padding: formStyle.padding || '24px' }}>
           {(showFormTitle || showFormDescription) && (
-            <div className="mb-8 text-center">
+            <div className="text-center">
               {showFormTitle && (
                 <h1
-                  className="text-3xl font-bold mb-4"
-                  style={{
-                    color: formStyle.textColor || 'inherit',
-                    fontFamily: formStyle.fontFamily || 'inherit'
-                  }}
+                  style={getTitleStyle()}
                 >
                   {formTitle || 'Form Title'}
                 </h1>
               )}
               {showFormDescription && formDescription && (
                 <p
-                  className="text-lg"
-                  style={{
-                    color: formStyle.textColor || 'inherit',
-                    fontFamily: formStyle.fontFamily || 'inherit'
-                  }}
+                  style={getDescriptionStyle()}
                 >
                   {formDescription}
                 </p>
@@ -161,7 +190,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className={`space-y-6 min-h-[400px] transition-all duration-200 ${snapshot.isDraggingOver ? 'bg-blue-50/50' : ''
+                className={`min-h-[400px] transition-all duration-200 ${snapshot.isDraggingOver ? 'bg-blue-50/50' : ''
                   }`}
               >
                 {formFields.length === 0 ? (
@@ -171,52 +200,57 @@ const FormPreview: React.FC<FormPreviewProps> = ({
                     <p className="text-gray-500">Drag elements from the left panel to start building your form</p>
                   </div>
                 ) : (
-                  formFields.map((field, index) => (
-                    <Draggable key={field.id} draggableId={field.id} index={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={`group relative transition-all duration-200 cursor-pointer ${selectedFieldId === field.id
-                            ? 'ring-2 ring-blue-500 ring-offset-2'
-                            : snapshot.isDragging
-                              ? 'shadow-lg'
-                              : 'hover:ring-1 hover:ring-gray-300'
-                            }`}
-                          onClick={() => onFieldClick(field.id)}
-                        >
-                          <div className="mb-2">
-                            {field.showLabel !== false && (
-                              <label
-                                className="block text-sm font-medium mb-1"
-                                style={{
-                                  color: field.labelStyle?.textColor || 'inherit',
-                                  fontFamily: field.labelStyle?.fontFamily || 'inherit',
-                                  fontSize: field.labelStyle?.fontSize || 'inherit'
-                                }}
-                              >
-                                {field.label}
-                                {field.required && <span className="text-red-500 ml-1">*</span>}
-                              </label>
-                            )}
-                            {renderField(field)}
-                          </div>
-
-                          {/* Delete button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onFieldRemove(field.id);
-                            }}
-                            className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transform translate-x-2 -translate-y-2"
+                  formFields.map((field, index) => {
+                    const getLabelStyle = (field: FormField) => {
+                      const labelStyle = field.labelStyle || {};
+                      return {
+                        color: labelStyle.textColor || '#000000',
+                        fontSize: labelStyle.fontSize || '14px',
+                        fontFamily: labelStyle.fontFamily || 'Inter'
+                      };
+                    };
+                    return (
+                      <Draggable key={field.id} draggableId={field.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={`group relative transition-all duration-200 cursor-pointer ${selectedFieldId === field.id
+                              ? 'ring-2 ring-blue-500 ring-offset-2'
+                              : snapshot.isDragging
+                                ? 'shadow-lg'
+                                : 'hover:ring-1 hover:ring-gray-300'
+                              }`}
+                            onClick={() => onFieldClick(field.id)}
                           >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
+                            <div className="mb-2">
+                              {field.showLabel !== false && (
+                                <label
+                                  style={getLabelStyle(field)}
+                                >
+                                  {field.label}
+                                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                                </label>
+                              )}
+                              {renderField(field)}
+                            </div>
+
+                            {/* Delete button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onFieldRemove(field.id);
+                              }}
+                              className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transform translate-x-2 -translate-y-2"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </Draggable>
+                    )
+                  })
                 )}
                 {provided.placeholder}
               </div>
@@ -225,7 +259,6 @@ const FormPreview: React.FC<FormPreviewProps> = ({
           <div className="pt-6">
             <Button
               type="submit"
-              className="w-full h-14 font-semibold rounded-none"
               style={formStyle.buttonStyle}
             >
               Submit Form
